@@ -2,6 +2,7 @@
 This is the GUI class which opens the GUI
 """
 from appJar import gui
+import main as main
 import ctypes
 import Backend.FromData as fd
 
@@ -53,7 +54,7 @@ class GUI:
         self._app.setLabelBg("Checkout", "Skyblue")
 
     def add_menu_items(self):
-        self._app.setPadding([450, 30])
+        self._app.setPadding([550, 30])
         self._app.startFrame("Items", colspan=0, row=0, column=0)
         self._app.startLabelFrame("Menu", colspan=0, column=0, row=0)
         self._app.startTabbedFrame("Menu_Items")
@@ -72,10 +73,10 @@ class GUI:
         self._app.startTab("Breakfast")
 
         self._app.setSticky("ew")
-        self._app.setFont(20)
+        self._app.setFont(18)
         counter = 0
         len_of_data = fd.get_length(fd.get_data("Breakfast"))
-        for x in range(5):
+        for x in range(4):
             for y in range(5):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Breakfast"), counter)
@@ -95,10 +96,10 @@ class GUI:
         self._app.startTab("Cold Food")
 
         self._app.setSticky("ew")
-        self._app.setFont(20)
+        self._app.setFont(18)
         counter = 0
         len_of_data = fd.get_length(fd.get_data("Cold Food"))
-        for x in range(5):
+        for x in range(4):
             for y in range(5):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Cold Food"), counter)
@@ -116,20 +117,18 @@ class GUI:
 
     def menu_add_hot_food(self):
         self._app.startTab("Hot Food")
-        print("\nHot Food")
 
         self._app.setSticky("ew")
-        self._app.setFont(20)
+        self._app.setFont(18)
         counter = 0
         len_of_data = fd.get_length(fd.get_data("Hot Food"))
-        for x in range(5):
+        for x in range(4):
             for y in range(5):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Hot Food"), counter)
                     name = f"{data_name}\n${data_price}"
                     x1 = x
                     y1 = y
-                    print(f"{data_name}, {data_price}")
                     self._app.addButton(name, self.add, row=x, column=y)
                     self._app.setButtonHeights(name, 7)
                     self._app.setButtonWidths(name, 20)
@@ -142,10 +141,10 @@ class GUI:
         self._app.startTab("Ice blocks")
 
         self._app.setSticky("ew")
-        self._app.setFont(20)
+        self._app.setFont(18)
         counter = 0
         len_of_data = fd.get_length(fd.get_data("Ice Blocks"))
-        for x in range(5):
+        for x in range(4):
             for y in range(5):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Ice Blocks"), counter)
@@ -164,11 +163,13 @@ class GUI:
     def menu_add_drinks(self):
         self._app.startTab("Drinks")
 
+
         self._app.setSticky("ew")
-        self._app.setFont(20)
+        self._app.setFont(18)
         counter = 0
         len_of_data = fd.get_length(fd.get_data("Drinks"))
-        for x in range(5):
+
+        for x in range(4):
             for y in range(5):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Drinks"), counter)
@@ -189,9 +190,28 @@ class GUI:
         self._app.startFrame("Total", colspan=0, row=0, column=0)
         self._app.startLabelFrame("Running_Total", colspan=0, column=0, row=0)
 
-        self._app.addLabel("--------------------------")
+        self._app.addLabel("----------------------------------------")
         for num in range(1, 10):
             self._app.addLabel(f"Order Num: {num}\nFOODNAME", colspan=0, row=num, column=0)
+
+        self._app.stopLabelFrame()
+        self._app.stopFrame()
+
+    def refresh_totals(self):
+        """ Updates the running totals frame """
+
+        self._app.openFrame("Total")
+        cart = main.shopping_cart.get_items()
+        self._app.emptyCurrentContainer()
+        self._app.startLabelFrame("Running_Total", colspan=0, column=0, row=0)
+
+        self._app.addLabel("----------------------------------------")
+
+        count = 1
+        for item in cart:
+            price, amount = cart[item]
+            self._app.addLabel(f"{amount}x {item}: ${price * amount}", colspan=0, row=count, column=0)
+            count += 1
 
         self._app.stopLabelFrame()
         self._app.stopFrame()
@@ -205,8 +225,13 @@ class GUI:
             print("CART TIME")
 
     def add(self, button):
-        if button == "Add 1 1,1":
-            print("Adding")
+        print(main.shopping_cart.get_items())
+        split = button.split("\n")
+        split[1] = float(split[1].replace('$', ''))
+        main.shopping_cart.add_item(split[0], split[1])
+        self.refresh_totals()
+
+
 
     # To Start the GUI
     def start_app(self):
