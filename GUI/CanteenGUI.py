@@ -21,7 +21,7 @@ class GUI:
     def __init__(self):
         app = gui("RHS Canteen", "fullscreen")
         app.setBg("Gainsboro")
-        app.setFont(16)
+        app.setFont(size=10)
         app.setImageLocation("GUI/images")
 
         self._app = app
@@ -54,8 +54,9 @@ class GUI:
         self._app.setLabelBg("Checkout", "Skyblue")
 
     def add_menu_items(self):
-        self._app.setPadding([550, 30])
+        self._app.setPadding([480, 30])
         self._app.startFrame("Items", colspan=0, row=0, column=0)
+
         self._app.startLabelFrame("Menu", colspan=0, column=0, row=0)
         self._app.startTabbedFrame("Menu_Items")
 
@@ -77,7 +78,7 @@ class GUI:
         counter = 0
         len_of_data = fd.get_length(fd.get_data("Breakfast"))
         for x in range(4):
-            for y in range(5):
+            for y in range(4):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Breakfast"), counter)
                     name = f"{data_name}\n${data_price}"
@@ -86,7 +87,7 @@ class GUI:
 
                     self._app.addButton(name, self.add, row=x, column=y)
                     self._app.setButtonHeights(name, 7)
-                    self._app.setButtonWidths(name, 20)
+                    self._app.setButtonWidths(name, 25)
                     self._app.setButtonBg(name, "White")
                     counter += 1
 
@@ -100,7 +101,7 @@ class GUI:
         counter = 0
         len_of_data = fd.get_length(fd.get_data("Cold Food"))
         for x in range(4):
-            for y in range(5):
+            for y in range(4):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Cold Food"), counter)
                     name = f"{data_name}\n${data_price}"
@@ -109,7 +110,7 @@ class GUI:
 
                     self._app.addButton(name, self.add, row=x, column=y)
                     self._app.setButtonHeights(name, 7)
-                    self._app.setButtonWidths(name, 20)
+                    self._app.setButtonWidths(name, 25)
                     self._app.setButtonBg(name, "White")
                     counter += 1
 
@@ -119,19 +120,19 @@ class GUI:
         self._app.startTab("Hot Food")
 
         self._app.setSticky("ew")
-        self._app.setFont(18)
         counter = 0
         len_of_data = fd.get_length(fd.get_data("Hot Food"))
         for x in range(4):
-            for y in range(5):
+            for y in range(4):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Hot Food"), counter)
+
                     name = f"{data_name}\n${data_price}"
                     x1 = x
                     y1 = y
                     self._app.addButton(name, self.add, row=x, column=y)
                     self._app.setButtonHeights(name, 7)
-                    self._app.setButtonWidths(name, 20)
+                    self._app.setButtonWidths(name, 25)
                     self._app.setButtonBg(name, "White")
                     counter += 1
 
@@ -141,11 +142,11 @@ class GUI:
         self._app.startTab("Ice blocks")
 
         self._app.setSticky("ew")
-        self._app.setFont(18)
+        self._app.setFont(size=6)
         counter = 0
         len_of_data = fd.get_length(fd.get_data("Ice Blocks"))
         for x in range(4):
-            for y in range(5):
+            for y in range(4):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Ice Blocks"), counter)
                     name = f"{data_name}\n${data_price}"
@@ -170,7 +171,7 @@ class GUI:
         len_of_data = fd.get_length(fd.get_data("Drinks"))
 
         for x in range(4):
-            for y in range(5):
+            for y in range(4):
                 if counter < len_of_data:
                     data_name, data_price = fd.get_item_and_price(fd.get_data("Drinks"), counter)
                     name = f"{data_name}\n${data_price}"
@@ -179,14 +180,14 @@ class GUI:
 
                     self._app.addButton(name, self.add, row=x, column=y)
                     self._app.setButtonHeights(name, 7)
-                    self._app.setButtonWidths(name, 20)
+                    self._app.setButtonWidths(name, 25)
                     self._app.setButtonBg(name, "White")
                     counter += 1
 
         self._app.stopTab()
 
     def add_running_total(self):
-        self._app.setPadding([150, 30])
+        self._app.setPadding([140, 30])
         self._app.startFrame("Total", colspan=0, row=0, column=0)
         self._app.startLabelFrame("Running_Total", colspan=0, column=0, row=0)
 
@@ -222,7 +223,12 @@ class GUI:
 
     def cart(self, button):
         if button == "Cart":
-            print("CART TIME")
+            self._app.hide()
+            self._app.startSubWindow("Checkout", modal=True)
+            self._app.addLabel("l1", "Checkout")
+            self._app.setSize(400, 400)
+            self._app.stopSubWindow()
+            self._app.showSubWindow("Checkout")
 
     def add(self, button):
         print(main.shopping_cart.get_items())
