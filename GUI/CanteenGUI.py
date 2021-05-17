@@ -192,8 +192,6 @@ class GUI:
         self._app.startLabelFrame("Running_Total", colspan=0, column=0, row=0)
 
         self._app.addLabel("----------------------------------------")
-        for num in range(1, 10):
-            self._app.addLabel(f"Order Num: {num}\nFOODNAME", colspan=0, row=num, column=0)
 
         self._app.stopLabelFrame()
         self._app.stopFrame()
