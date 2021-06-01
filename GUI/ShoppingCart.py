@@ -23,3 +23,13 @@ class Cart:
         """ Returns a list of all items, prices and amounts """
         return self._cart
 
+    def get_total_cost(self):
+        """ Returns the total cost of the cart """
+        total = 0
+        cart = self.get_items()
+        for item in cart:
+            price, amount = cart[item]
+            total += (price * amount)
+
+        return total
+

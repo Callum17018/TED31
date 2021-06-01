@@ -11,14 +11,17 @@ screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
 
 def openGUI():
+    """ Opens the GUI """
     canteen_gui = GUI()
     canteen_gui.start_app()
     return canteen_gui
 
 
 class GUI:
-    # Initialise the app
+    """ Runs the GUIs internal components """
+
     def __init__(self):
+        """ Starts the App with appjar"""
         app = gui("RHS Canteen", "fullscreen")
         app.setBg("Gainsboro")
         app.setFont(size=10)
@@ -29,6 +32,9 @@ class GUI:
         self.add_side_bar()
 
     def add_side_bar(self):
+        """ Adds a nice looking sidebar and
+        starts the proccess of creating the widgets on the gui
+        """
         fill_color = "SkyBlue"
         self._app.addCanvas("sidebar")
         self._app.addCanvasCircle("sidebar", -70, -20, 200, fill=fill_color, outline=fill_color)
@@ -40,11 +46,13 @@ class GUI:
         self.add_running_total()
 
     def add_exit_button(self):
+        """ Makes the exit button and places it on the GUI """
         self._app.setSticky("sw")
         self._app.setPadding([21, 20])
         self._app.addButton("Exit", self.exit, colspan=0, column=0, row=0)
 
     def add_cart_button(self):
+        """ Makes the cart button and places it on the GUI """
         self._app.setSticky("nw")
         self._app.setPadding([30, 50])
         self._app.addIconButton("Cart", self.cart, "cart-alt-1", colspan=0, column=0, row=0)
@@ -54,6 +62,7 @@ class GUI:
         self._app.setLabelBg("Checkout", "Skyblue")
 
     def add_menu_items(self):
+        """ Makes the menu items and places them on the GUI """
         self._app.setPadding([480, 30])
         self._app.startFrame("Items", colspan=0, row=0, column=0)
 
@@ -71,6 +80,7 @@ class GUI:
         self._app.stopFrame()
 
     def menu_add_breakfast(self):
+        """ Makes the menu items and places them on the GUI """
         self._app.startTab("Breakfast")
 
         self._app.setSticky("ew")
@@ -93,7 +103,9 @@ class GUI:
 
         self._app.stopTab()
 
+
     def menu_add_cold_food(self):
+        """ Makes the menu items and places them on the GUI """
         self._app.startTab("Cold Food")
 
         self._app.setSticky("ew")
@@ -116,7 +128,9 @@ class GUI:
 
         self._app.stopTab()
 
+
     def menu_add_hot_food(self):
+        """ Makes the menu items and places them on the GUI """
         self._app.startTab("Hot Food")
 
         self._app.setSticky("ew")
@@ -138,7 +152,9 @@ class GUI:
 
         self._app.stopTab()
 
+
     def menu_add_ice_blocks(self):
+        """ Makes the menu items and places them on the GUI """
         self._app.startTab("Ice blocks")
 
         self._app.setSticky("ew")
@@ -161,7 +177,9 @@ class GUI:
 
         self._app.stopTab()
 
+
     def menu_add_drinks(self):
+        """ Makes the menu items and places them on the GUI """
         self._app.startTab("Drinks")
 
 
@@ -186,7 +204,9 @@ class GUI:
 
         self._app.stopTab()
 
+
     def add_running_total(self):
+        """ Makes the running total and places them on the GUI """
         self._app.setPadding([140, 30])
         self._app.startFrame("Total", colspan=0, row=0, column=0)
         self._app.startLabelFrame("Running_Total", colspan=0, column=0, row=0)
@@ -195,6 +215,7 @@ class GUI:
 
         self._app.stopLabelFrame()
         self._app.stopFrame()
+
 
     def refresh_totals(self):
         """ Updates the running totals frame """
@@ -215,20 +236,42 @@ class GUI:
         self._app.stopLabelFrame()
         self._app.stopFrame()
 
+
     def exit(self, button):
+        """ Run when the exit button is pressed """
         if button == "Exit":
             self._app.stop()
 
+
+    def order(self, button):
+        """ Run when the order button is pressed """
+        if button == "Order":
+            self._app.stop()
+
+
     def cart(self, button):
+        """ Run when the cart button is pressed """
         if button == "Cart":
             self._app.hide()
             self._app.startSubWindow("Checkout", modal=True)
-            self._app.addLabel("l1", "Checkout")
+            # self._app.addLabel("l1", "Checkout")
             self._app.setSize(400, 400)
+
+            self._app.addLabel("checkout_total", f"  Checkout Total: ${main.shopping_cart.get_total_cost()}  ", row=0)
+            self._app.setLabelBg("checkout_total","Blue")
+
+            self._app.addLabelEntry("Name")
+            self._app.addLabelEntry("ID/Cypher")
+            self._app.addLabelEntry("Class")
+
+            self._app.addButton("Order", self.order)
+
             self._app.stopSubWindow()
             self._app.showSubWindow("Checkout")
 
+
     def add(self, button):
+        """ Run when the any menu item is pressed """
         print(main.shopping_cart.get_items())
         split = button.split("\n")
         split[1] = float(split[1].replace('$', ''))
@@ -239,4 +282,5 @@ class GUI:
 
     # To Start the GUI
     def start_app(self):
+        """ Actually vissily opens the window """
         self._app.go()

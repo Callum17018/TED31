@@ -1,5 +1,7 @@
-# Canteen Ordering System
-# By Callum Rutledge
+"""
+Canteen Ordering System
+By Callum Rutledge
+"""
 
 # Imports
 import GUI.CanteenGUI
@@ -16,4 +18,5 @@ def main():
         GUI.CanteenGUI.openGUI()
 
 
+# Runs the program
 main()

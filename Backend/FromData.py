@@ -64,6 +64,6 @@ def get_length(data):
     return int((len(data) - 1) / 2)
 
 
-print(get_data("Hot Food"))
+# print(get_data("Hot Food"))
 # print(get_length(get_data("Breakfast")))
 
